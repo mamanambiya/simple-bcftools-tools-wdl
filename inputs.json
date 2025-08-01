@@ -1,0 +1,8 @@
+{
+  "BcftoolsStats.vcf_file": "path/to/your/input.vcf.gz",
+  "BcftoolsStats.vcf_index": "path/to/your/input.vcf.gz.tbi",
+  "BcftoolsStats.output_prefix": "my_vcf_stats",
+  "BcftoolsStats.regions": null,
+  "BcftoolsStats.targets": null,
+  "BcftoolsStats.threads": 4
+}

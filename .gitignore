@@ -1,0 +1,58 @@
+# WDL execution directories
+cromwell-executions/
+cromwell-workflow-logs/
+call-*/
+execution/
+
+# Output files
+*.stats.txt
+*.summary.txt
+*_plots/
+*_plots.tar.gz
+*.vcf
+*.vcf.gz
+*.vcf.gz.tbi
+*.bcf
+*.bcf.csi
+
+# Cromwell files
+cromwell-*.jar
+womtool-*.jar
+*.log
+
+# Test data (if large)
+test/large_*.vcf*
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+env/
+
+# Workflow graphs
+*.dot
+*.png
+*.svg
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Azure configuration files with secrets
+cromwell-azure.conf
+azure-credentials.json
+
+# Local configuration overrides
+local.conf
+override.json

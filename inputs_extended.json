@@ -1,0 +1,11 @@
+{
+  "BcftoolsExtended.vcf_file": "path/to/your/input.vcf.gz",
+  "BcftoolsExtended.vcf_index": "path/to/your/input.vcf.gz.tbi",
+  "BcftoolsExtended.output_prefix": "my_analysis",
+  "BcftoolsExtended.regions": null,
+  "BcftoolsExtended.targets": null,
+  "BcftoolsExtended.threads": 4,
+  "BcftoolsExtended.run_stats": true,
+  "BcftoolsExtended.run_query": true,
+  "BcftoolsExtended.run_view": true
+}

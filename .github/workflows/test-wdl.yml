@@ -1,0 +1,88 @@
+name: Test WDL Workflows
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - '**.wdl'
+      - '**.json'
+      - '.github/workflows/test-wdl.yml'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - '**.wdl'
+      - '**.json'
+      - '.github/workflows/test-wdl.yml'
+
+jobs:
+  validate-wdl:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install miniwdl
+      run: |
+        pip install miniwdl
+        miniwdl --version
+
+    - name: Validate bcftools_stats.wdl
+      run: |
+        echo "Validating bcftools_stats.wdl..."
+        miniwdl check bcftools_stats.wdl
+
+    - name: Validate bcftools_extended.wdl
+      run: |
+        echo "Validating bcftools_extended.wdl..."
+        miniwdl check bcftools_extended.wdl
+
+    - name: Validate bcftools_stats_azure.wdl
+      run: |
+        echo "Validating bcftools_stats_azure.wdl..."
+        miniwdl check bcftools_stats_azure.wdl
+
+    - name: Check JSON syntax
+      run: |
+        echo "Checking JSON files..."
+        for json_file in *.json; do
+          echo "Validating $json_file"
+          python -m json.tool "$json_file" > /dev/null
+        done
+
+    - name: Generate workflow graphs (optional)
+      continue-on-error: true
+      run: |
+        # Install womtool for graph generation
+        wget https://github.com/broadinstitute/cromwell/releases/download/85/womtool-85.jar
+        
+        # Generate workflow graphs
+        for wdl in *.wdl; do
+          echo "Generating graph for $wdl"
+          java -jar womtool-85.jar graph "$wdl" > "${wdl%.wdl}.dot" || true
+        done
+        
+        # List generated files
+        ls -la *.dot 2>/dev/null || echo "No graphs generated"
+
+  test-docker-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Test Docker build
+      run: |
+        echo "Testing Docker build..."
+        docker build -t test-bcftools:latest -f docker/Dockerfile .
+        
+    - name: Test container
+      run: |
+        docker run --rm test-bcftools:latest bcftools --version
+        docker run --rm test-bcftools:latest which plot-vcfstats
