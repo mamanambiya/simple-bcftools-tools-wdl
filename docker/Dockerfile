@@ -1,66 +1,32 @@
 # Dockerfile for BCFtools with Azure and WDL compatibility
-FROM ubuntu:22.04
+# Using official biocontainers/bcftools as base for faster builds
+FROM biocontainers/bcftools:v1.19-1-deb_cv1
 
-# Set environment variables to avoid interactive prompts
+# Switch to root user for installations
+USER root
+
+# Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=UTC
 
-# Install dependencies and bcftools
+# Install additional dependencies for plot-vcfstats and Azure compatibility
 RUN apt-get update && apt-get install -y \
-    autoconf \
-    automake \
-    make \
-    gcc \
-    perl \
-    zlib1g-dev \
-    libbz2-dev \
-    liblzma-dev \
-    libcurl4-gnutls-dev \
-    libssl-dev \
-    libncurses5-dev \
-    wget \
-    bzip2 \
     python3 \
     python3-matplotlib \
     python3-numpy \
+    python3-pip \
+    texlive-latex-base \
+    texlive-latex-extra \
     curl \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Install htslib
-WORKDIR /tmp
-RUN wget https://github.com/samtools/htslib/releases/download/1.19.1/htslib-1.19.1.tar.bz2 && \
-    tar -xjf htslib-1.19.1.tar.bz2 && \
-    cd htslib-1.19.1 && \
-    ./configure --enable-libcurl --enable-s3 --enable-gcs && \
-    make && \
-    make install && \
-    cd .. && \
-    rm -rf htslib-1.19.1*
-
-# Install bcftools
-RUN wget https://github.com/samtools/bcftools/releases/download/1.19/bcftools-1.19.tar.bz2 && \
-    tar -xjf bcftools-1.19.tar.bz2 && \
-    cd bcftools-1.19 && \
-    ./configure && \
-    make && \
-    make install && \
-    cd .. && \
-    rm -rf bcftools-1.19*
-
-# Configure dynamic linker run-time bindings
-RUN ldconfig
-
-# Install plot-vcfstats dependencies and script
-RUN apt-get update && apt-get install -y \
-    python3-pip \
-    texlive-latex-base \
-    texlive-latex-extra \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy plot-vcfstats from bcftools misc
-RUN wget https://raw.githubusercontent.com/samtools/bcftools/develop/misc/plot-vcfstats -O /usr/local/bin/plot-vcfstats && \
-    chmod +x /usr/local/bin/plot-vcfstats
+# plot-vcfstats should already be available in the biocontainers image
+# but let's ensure it's in the PATH and executable
+RUN if [ ! -f /usr/local/bin/plot-vcfstats ]; then \
+        wget https://raw.githubusercontent.com/samtools/bcftools/develop/misc/plot-vcfstats -O /usr/local/bin/plot-vcfstats && \
+        chmod +x /usr/local/bin/plot-vcfstats; \
+    fi
 
 # Set working directory
 WORKDIR /data
