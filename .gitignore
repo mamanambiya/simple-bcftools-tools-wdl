@@ -56,3 +56,4 @@ azure-credentials.json
 # Local configuration overrides
 local.conf
 override.json
+.history/
