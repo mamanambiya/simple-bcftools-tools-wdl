@@ -4,8 +4,8 @@
 
 set -e
 
-GITHUB_ORG="${GITHUB_ORG:-mamanambiya}"
-GITHUB_REPO="${GITHUB_REPO:-simple-bcftools-tools-wdl}"
+GITHUB_ORG="${GITHUB_ORG:-YOUR_GITHUB_ORG}"
+GITHUB_REPO="${GITHUB_REPO:-YOUR_REPO_NAME}"
 CONTAINER_TAG="${CONTAINER_TAG:-latest}"
 
 IMAGE="ghcr.io/${GITHUB_ORG}/${GITHUB_REPO}/bcftools-azure:${CONTAINER_TAG}"

@@ -16,8 +16,8 @@ workflow BcftoolsStatsAzure {
         String? azure_container_name
         
         # Container registry settings
-        String github_org = "mamanambiya"
-        String github_repo = "simple-bcftools-tools-wdl"
+        String github_org = "YOUR_GITHUB_ORG"
+        String github_repo = "YOUR_REPO_NAME"
         String container_tag = "latest"
     }
     

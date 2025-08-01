@@ -69,8 +69,8 @@ WORKDIR /data
 LABEL org.opencontainers.image.title="BCFtools for Azure"
 LABEL org.opencontainers.image.description="BCFtools container optimized for Azure and WDL workflows"
 LABEL org.opencontainers.image.version="1.19"
-LABEL org.opencontainers.image.authors="mamanambiya"
-LABEL org.opencontainers.image.source="https://github.com/mamanambiya/simple-bcftools-tools-wdl"
+LABEL org.opencontainers.image.authors="Your Name"
+LABEL org.opencontainers.image.source="https://github.com/YOUR_USERNAME/YOUR_REPO"
 
 # Default command
 CMD ["bcftools", "--version"]
